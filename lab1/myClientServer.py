@@ -25,7 +25,27 @@ class Server:
         self.sock.bind((const_cs.HOST, const_cs.PORT))
         self.sock.settimeout(3)  # time out in order not to block forever
         self._logger.info("Server bound to socket " + str(self.sock))
-        self.book = dict(Bob = "0187", Rob = "0123")
+        self.book = dict()
+
+    def addToDictionary(self, name, number, connection):
+        if name and number:
+            name = name.strip()
+            number = number.strip()
+            if not name[0].isupper():
+                connection.send("Error;invalid name".encode("ascii"))
+                self._logger.info("invalid name")
+            elif not name.isalpha():
+                connection.send("Error;invalid name".encode("ascii"))
+                self._logger.info("invalid name")
+                
+            elif not number.isdigit():
+                connection.send("Error;invalid number".encode("ascii"))
+                self._logger.info("invalid number")
+            else:
+                self.book[name] = number
+                return True
+            return False
+            
 
 
     def serve(self):
@@ -41,6 +61,17 @@ class Server:
                         break  # stop if client stopped
                     msg = data.decode("ascii")
                     msg_arr = msg.split(";")
+                    if msg_arr[0] == "Add":
+                        if len(msg_arr) == 3:
+                            if self.addToDictionary(msg_arr[1], msg_arr[2], connection):
+                                connection.send(("Added;" + "Added " + msg_arr[1] + " with number " + msg_arr[2]).encode("ascii"))
+                                self._logger.info("entry added successfully")
+                            else:
+                                break
+                        else:
+                            connection.send("Error;not enough arguments".encode("ascii"))
+                            self._logger.info("not enough arguments")
+                            break
                     if msg_arr[0] == 'Get':
                         name = msg_arr[1]
                         name = name.strip()
@@ -84,6 +115,9 @@ class Client:
         self.call("GetAll;")
         self.close()
 
+    def addToDictionary(self, nameIn, numberIn):
+        self.call("Add;" + nameIn + ";" + numberIn)
+
     def call(self, msg_in="Hello, world"):
         """ Call server """
         self.sock.send(msg_in.encode('ascii'))  # send encoded string as data
@@ -99,6 +133,8 @@ class Client:
                 item_arr = item.split(',')
                 print('Name: ' + item_arr[0] + ' Number: ' + item_arr[1])
         if msg_arr[0] == "Error":
+            print(msg_arr[1])
+        if msg_arr[0] == "Added":
             print(msg_arr[1])
         self.sock.close()  # close the connection
         self.logger.info("Client down.")
