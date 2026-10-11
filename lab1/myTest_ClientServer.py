@@ -24,6 +24,10 @@ class TestEchoService(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.client = clientserver.Client()  # create new client for each test
+        self.client.call("Add;Bob;0187")
+        self.client = clientserver.Client()
+        self.client.call("Add;Rob;0123")
+        self.client = clientserver.Client()
 
     def test_srv_call_1(self):  # each test_* function is a test
         """Test simple call 1"""
@@ -60,7 +64,7 @@ class TestEchoService(unittest.TestCase):
         msg = self.client.call("Get;Ali")
         self.assertEqual(msg, "Error;invalid name")
 
-    def test_srv_call_symbols(self):  # each test_* function is a test
+    def test_srv_call_symbols1(self):  # each test_* function is a test
         """Test call with symbols"""
         msg = self.client.call("Get;Bob$")
         self.assertEqual(msg, "Error;invalid name")
@@ -85,7 +89,7 @@ class TestEchoService(unittest.TestCase):
         """Test simple getAll"""
         self.assertIsNone(self.client.getAll())
 
-    def test_srv_call_symbols(self):  # each test_* function is a test
+    def test_srv_call_symbols2(self):  # each test_* function is a test
         """Test call with symbols"""
         self.assertIsNone(self.client.get("Bob$"))
 
