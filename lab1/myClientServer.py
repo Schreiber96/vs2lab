@@ -27,41 +27,26 @@ class Server:
         self._logger.info("Server bound to socket " + str(self.sock))
         self.book = dict()
 
-    def addToDict(self, name, number):
-        if name and number:
-            name = name.strip()
-            number = number.strip()
-            if not name[0].isupper():
-                self._logger.info("invalid name")
-            elif not name.isalpha():
-                self._logger.info("invalid name")
-            elif not number.isdigit():
-                self._logger.info("invalid number")
-            else:
-                self.book[name] = number
-                return True
-            return False
 
-    def addToDictionary(self, name, number, connection):
+    def addToDictionary(self, name, number, connection=None):
         if name and number:
             name = name.strip()
             number = number.strip()
             if not name[0].isupper():
-                connection.send("Error;invalid name".encode("ascii"))
+                if connection: connection.send("Error;invalid name".encode("ascii"))
                 self._logger.info("invalid name")
             elif not name.isalpha():
-                connection.send("Error;invalid name".encode("ascii"))
+                if connection: connection.send("Error;invalid name".encode("ascii"))
                 self._logger.info("invalid name")
                 
             elif not number.isdigit():
-                connection.send("Error;invalid number".encode("ascii"))
+                if connection: connection.send("Error;invalid number".encode("ascii"))
                 self._logger.info("invalid number")
             else:
                 self.book[name] = number
                 return True
             return False
             
-
 
     def serve(self):
         """ Serve echo """
