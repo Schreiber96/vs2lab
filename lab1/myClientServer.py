@@ -79,6 +79,10 @@ class Server:
                             connection.send("Error;no name given".encode("ascii"))
                             self._logger.info("no name given")
                             break
+                        if not name.isalpha:
+                            connection.send("Error;invalid name".encode("ascii"))
+                            self.logger.info("invalid name")
+                        name = name.capitalize()
                         if name not in self.book:
                             connection.send(("Error;invalid name").encode("ascii"))
                             self._logger.info("invalid name")

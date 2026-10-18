@@ -93,6 +93,10 @@ class TestEchoService(unittest.TestCase):
         """Test call with symbols"""
         self.assertIsNone(self.client.get("Bob$"))
 
+    def test_add_lowercase_name(self):
+        """Test add lowercase name"""
+        self.assertIsNone(self.client.addToDictionary("bob", "0187"))
+
     def tearDown(self):
         self.client.close()  # terminate client after each test
 
