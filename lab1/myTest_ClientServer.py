@@ -93,6 +93,20 @@ class TestEchoService(unittest.TestCase):
         """Test call with symbols"""
         self.assertIsNone(self.client.get("Bob$"))
 
+    def test_add_lowercase_name(self):
+        """Test add lowercase name"""
+        self.assertIsNone(self.client.addToDictionary("bob", "0187"))
+        
+    def test_equal_output_on_lower_and_upper(self):
+        """Test equal output on lower and upper"""
+        self.client.addToDictionary("bob", "1234")
+        self.client = clientserver.Client()
+        output1 = self.client.get("bob")
+        self.client = clientserver.Client()
+        output2 = self.client.get("Bob")
+        self.assertEqual(output1, output2)
+        
+
     def tearDown(self):
         self.client.close()  # terminate client after each test
 
