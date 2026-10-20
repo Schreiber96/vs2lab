@@ -60,6 +60,7 @@ class Server:
                     if not data:
                         break  # stop if client stopped
                     msg = data.decode("ascii")
+                    msg = msg.replace(" ", "")
                     msg_arr = msg.split(";")
                     if msg_arr[0] == "Add":
                         if len(msg_arr) == 3:
