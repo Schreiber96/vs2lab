@@ -115,9 +115,9 @@ class TestEchoService(unittest.TestCase):
         """Test add with spaces"""
         self.assertIsNone(self.client.addToDictionary("   John    ", "0111"))
 
-    # def test_add_empty_space(self):
-    #     """Test add with empty spaces"""
-    #     self.assertIsNone(self.client.addToDictionary("   ", "0111"))
+    def test_add_empty_space(self):         
+        """Test add with empty spaces"""
+        self.assertIsNone(self.client.addToDictionary("   ", "0111"))
 
     def test_add_empty(self):
         """Test add with empty input"""
