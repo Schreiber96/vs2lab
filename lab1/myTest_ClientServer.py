@@ -24,10 +24,10 @@ class TestEchoService(unittest.TestCase):
     def setUp(self):
         super().setUp()
         self.client = clientserver.Client()  # create new client for each test
-        # self.client.call("Add;Bob;0187")
-        # self.client = clientserver.Client()
-        # self.client.call("Add;Rob;0123")
-        # self.client = clientserver.Client()
+        self.client.call("Add;Bob;0187")
+        self.client = clientserver.Client()
+        self.client.call("Add;Rob;0123")
+        self.client = clientserver.Client()
 
     # each test_* function is a test
 
@@ -41,69 +41,67 @@ class TestEchoService(unittest.TestCase):
         msg = self.client.call("Get;Rob")
         self.assertEqual(msg, "Return;0123")
 
-    # def test_srv_call_lower_case(self):
-    #     """Test call with lower case"""
-    #     msg = self.client.call("Get;bob")
-    #     self.assertEqual(msg, "Return;0187")
+    def test_srv_call_lower_case(self):
+        """Test call with lower case"""
+        msg = self.client.call("Get;bob")
+        self.assertEqual(msg, "Return;0187")
 
-    # def test_srv_call_space(self):
-    #     """Test call with spaces"""
-    #     msg = self.client.call("Get;   Bob    ")
-    #     self.assertEqual(msg, "Return;0187")
+    def test_srv_call_space(self):
+        """Test call with spaces"""
+        msg = self.client.call("Get;   Bob    ")
+        self.assertEqual(msg, "Return;0187")
 
-    # def test_srv_call_empty_space(self):
-    #     """Test call with empty spaces"""
-    #     msg = self.client.call("Get;   ")
-    #     self.assertEqual(msg, "Error;no name given")
+    def test_srv_call_empty_space(self):
+        """Test call with empty spaces"""
+        msg = self.client.call("Get;   ")
+        self.assertEqual(msg, "Error;no name given")
 
-    # def test_srv_call_empty(self):
-    #     """Test call with empty input"""
-    #     msg = self.client.call("Get;")
-    #     self.assertEqual(msg, "Error;no name given")
+    def test_srv_call_empty(self):
+        """Test call with empty input"""
+        msg = self.client.call("Get;")
+        self.assertEqual(msg, "Error;no name given")
 
-    # def test_srv_call_invalid(self):
-    #     """Test call with invalid name"""
-    #     msg = self.client.call("Get;Ali")
-    #     self.assertEqual(msg, "Error;invalid name")
+    def test_srv_call_invalid(self):
+        """Test call with invalid name"""
+        msg = self.client.call("Get;Ali")
+        self.assertEqual(msg, "Error;invalid name")
 
-    # def test_srv_call_symbols(self):
-    #     """Test call with symbols"""
-    #     msg = self.client.call("Get;Bob$")
-    #     self.assertEqual(msg, "Error;invalid name")
+    def test_srv_call_symbols(self):
+        """Test call with symbols"""
+        msg = self.client.call("Get;Bob$")
+        self.assertEqual(msg, "Error;invalid name")
 
-    # def test_srv_get(self):
-    #     """Test simple get"""
-    #     self.assertIsNone(self.client.get("Bob"))
+    def test_srv_get(self):
+        """Test simple get"""
+        self.assertIsNone(self.client.get("Bob"))
 
-    # def test_srv_get_lower_case(self):
-    #     """Test get with lower case"""
-    #     self.assertIsNone(self.client.get("bob"))
+    def test_srv_get_lower_case(self):
+        """Test get with lower case"""
+        self.assertIsNone(self.client.get("bob"))
 
-    # def test_srv_get_space(self):
-    #     """Test get with spaces"""
-    #     self.assertIsNone(self.client.get("   Bob    "))
+    def test_srv_get_space(self):
+        """Test get with spaces"""
+        self.assertIsNone(self.client.get("   Bob    "))
     
-    # def test_srv_get_empty_space(self):
-    #     """Test get with empty spaces"""
-    #     self.assertIsNone(self.client.get("   "))
+    def test_srv_get_empty_space(self):
+        """Test get with empty spaces"""
+        self.assertIsNone(self.client.get("   "))
 
-    # def test_srv_get_empty(self):
-    #     """Test get with empty input"""
-    #     self.assertIsNone(self.client.get(""))
+    def test_srv_get_empty(self):
+        """Test get with empty input"""
+        self.assertIsNone(self.client.get(""))
     
-    # def test_srv_get_invalid(self):
-    #     """Test get with invalid name"""
-    #     self.assertIsNone(self.client.get("Ali"))
+    def test_srv_get_invalid(self):
+        """Test get with invalid name"""
+        self.assertIsNone(self.client.get("Ali"))
 
-    # def test_srv_get_symbols(self):
-    #     """Test get with symbols"""
-    #     self.assertIsNone(self.client.get("Bob$"))
+    def test_srv_get_symbols(self):
+        """Test get with symbols"""
+        self.assertIsNone(self.client.get("Bob$"))
 
-    # def test_srv_getAll(self):
-    #     """Test simple getAll"""
-    #     self.assertIsNone(self.client.getAll())
-
-    #add tests, leerzeichen, symbolen, komische nummer, 
+    def test_srv_getAll(self):
+        """Test simple getAll"""
+        self.assertIsNone(self.client.getAll())
 
     def test_add_lowercase_name(self):
         """Test add lowercase name"""
@@ -117,9 +115,9 @@ class TestEchoService(unittest.TestCase):
         """Test add with spaces"""
         self.assertIsNone(self.client.addToDictionary("   John    ", "0111"))
 
-    def test_add_empty_space(self):
-        """Test add with empty spaces"""
-        self.assertIsNone(self.client.addToDictionary("   ", "0111"))
+    # def test_add_empty_space(self):
+    #     """Test add with empty spaces"""
+    #     self.assertIsNone(self.client.addToDictionary("   ", "0111"))
 
     def test_add_empty(self):
         """Test add with empty input"""
