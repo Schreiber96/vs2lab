@@ -3,7 +3,7 @@ import logging
 import rpc
 from context import lab_channel, lab_logging
 
-lab_logging.setup(stream_level=logging.INFO)
+lab_logging.setup(stream_level=logging.DEBUG)
 logger = logging.getLogger('vs2lab.lab2.rpc.runsrv')
 
 chan = lab_channel.Channel()
