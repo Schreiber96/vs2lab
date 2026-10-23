@@ -1,6 +1,6 @@
 import logging
 
-import rpc
+import our_rpc as rpc
 from context import lab_channel, lab_logging
 
 lab_logging.setup(stream_level=logging.DEBUG)

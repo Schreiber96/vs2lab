@@ -1,4 +1,4 @@
-import rpc
+import our_rpc as rpc
 import logging
 
 from context import lab_logging

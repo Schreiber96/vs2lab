@@ -1,5 +1,4 @@
 import constRPC
-import time
 
 from context import lab_channel
 
@@ -50,7 +49,6 @@ class Server:
         while True:
             msgreq = self.chan.receive_from_any(self.timeout)  # wait for any request
             if msgreq is not None:
-                time.sleep(5)
                 client = msgreq[0]  # see who is the caller
                 msgrpc = msgreq[1]  # fetch call & parameters
                 if constRPC.APPEND == msgrpc[0]:  # check what is being requested
