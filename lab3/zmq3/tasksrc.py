@@ -21,5 +21,5 @@ push_socket.bind(address)  # bind socket to address
 time.sleep(1)  # give all workers time to connect (needed for an even distribution)
 
 for i in range(100):  # generate 100 workloads
-    workload = random.randint(1, 100)  # compute workload
+    workload = 'Rey gibt ' + str(random.randint(1, 100)) + '%'  # compute workload
     push_socket.send(pickle.dumps((me, workload)))  # send workload to worker (pickle: trusted peers only)

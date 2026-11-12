@@ -21,4 +21,4 @@ print("{} started".format(me))
 while True:
     src_id, workload = pickle.loads(pull_socket.recv())  # receive work from a source (pickle: trusted peers only)
     print("{} received workload {} from {}".format(me, workload, src_id))
-    time.sleep(workload * 0.01)  # pretend to work
+    time.sleep(1 * 0.1)  # pretend to work
