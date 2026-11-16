@@ -7,8 +7,6 @@ import zmq
 import constPipe
 
 me = str(sys.argv[1])
-port = ''
-# port = str(int(constPipe.PORT2) + (int(me) - 1))
 
 address1 = "tcp://" + constPipe.SRC1 + ":" + constPipe.PORT1  # 1st task src
 address2 = "tcp://" + constPipe.SRC2 + ":" + constPipe.PORT2
