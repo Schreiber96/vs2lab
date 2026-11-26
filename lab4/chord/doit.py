@@ -37,11 +37,11 @@ class DummyChordClient:
 
 def create_and_run(num_bits, node_class, enter_bar, run_bar):
     """
-    Create and run a node (server or client role)
+    Create and run a node (chord node or client role)
     :param num_bits: address range of the channel
     :param node_class: class of node
-    :param enter_bar: barrier syncing channel population 
-    :param run_bar: barrier syncing node creation
+    :param enter_bar: barrier syncing channel population (all processes have joined)
+    :param run_bar: barrier syncing ring construction (all nodes have entered the ring)
     """
     chan = lab_channel.Channel(n_bits=num_bits)
     node = node_class(chan)

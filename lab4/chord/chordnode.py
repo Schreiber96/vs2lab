@@ -20,7 +20,7 @@ class ChordNode:
 
     def __init__(self, channel):
         """
-        :param channel: a communication chanel instance to be used
+        :param channel: a communication channel instance to be used
         """
         self.channel = channel  # Create reference to communication channel
 
@@ -40,11 +40,13 @@ class ChordNode:
 
     def in_between(self, key, lower_bound, upper_bound) -> bool:
         """
-        Check if key is located in the name range between two given nodes considering the ring topology
-        :param key:
-        :param lower_bound: first node name
-        :param upper_bound: second node name
-        :return:
+        Check if key is located in the half-open range [lower_bound, upper_bound) on the ring.
+        The bounds are plain values (callers often pass node names +1 to include a node),
+        and the range may wrap around the end of the name space.
+        :param key: name to be checked
+        :param lower_bound: first name of the range (included)
+        :param upper_bound: name after the range (excluded)
+        :return: True if key is in the range
         """
         if lower_bound <= upper_bound:
             return lower_bound <= key < upper_bound
@@ -78,14 +80,14 @@ class ChordNode:
         The node is the first one after the i'th offset p+2^(i-1).
         The node is located in the set of known nodes.
         :param i: row of finger table
-        :return: node for i'th row of finger table or None if unknown
+        :return: node for i'th row of finger table (None if the node list contains only this node)
         """
-        succ = (self.node_id + pow(2, i - 1)) % self.MAXPROC  # initialize succ(p+2^(i-1)), start with address offset
+        target = (self.node_id + pow(2, i - 1)) % self.MAXPROC  # name p+2^(i-1) whose successor is searched
         lwbi = self.node_list.index(self.node_id)  # initialize lower segment bound as own index in node set (p)
         upbi = (lwbi + 1) % len(self.node_list)  # initialize upper segment bound as index of next neighbor
 
         for _ in range(len(self.node_list)):  # go through all segments of known nodes
-            if self.in_between(succ, self.node_list[lwbi] + 1, self.node_list[upbi] + 1):
+            if self.in_between(target, self.node_list[lwbi] + 1, self.node_list[upbi] + 1):
                 return self.node_list[upbi]  # found successor
             (lwbi, upbi) = (upbi, (upbi + 1) % len(self.node_list))  # go to next segment
 
@@ -105,10 +107,10 @@ class ChordNode:
         """
         if self.in_between(key, self.finger_table[0] + 1, self.node_id + 1):  # key in (FT[0],self]
             return self.node_id  # node is responsible
-        elif self.in_between(key, self.node_id + 1, self.finger_table[1]):  # key in (self,FT[1]]
+        elif self.in_between(key, self.node_id + 1, self.finger_table[1]):  # key in (self,FT[1])
             return self.finger_table[1]  # successor responsible
         for i in range(1, self.n_bits):  # go through rest of FT
-            if self.in_between(key, self.finger_table[i], self.finger_table[(i + 1) ]):
+            if self.in_between(key, self.finger_table[i], self.finger_table[i + 1]):
                 return self.finger_table[i]  # key in [FT[i],FT[i+1])
         if self.in_between(key, self.finger_table[-1], self.finger_table[0] + 1): # key outside FT
             return self.finger_table[-1]  # key in [FT[-1],FT[0]]
@@ -150,7 +152,7 @@ class ChordNode:
                 self.logger.info("Node {:04n} received LOOKUP {:04n} from {:04n}."
                                  .format(self.node_id, int(request[1]), int(sender)))
 
-                # look up and return local successor 
+                # look up and return local successor
                 next_id: int = self.local_successor_node(request[1])
                 self.channel.send_to([sender], (constChord.LOOKUP_REP, next_id))
 
